@@ -3,6 +3,13 @@ from django.db import models
 from .directorys import BEER_TYPE_CHOICES, GRADE_CHOICES
 # Create your models here.
 
+class Type_beer(models.Model):
+    """Справочник с типами пива"""
+    key = models.CharField(max_length= 1,
+                           verbose_name="Ключ" )
+    
+    type = models.CharField(max_length= 30,
+                            verbose_name="Тип пива")
 
 class Provider(models.Model):
     """Таблица с информацией о поставщике"""
@@ -15,10 +22,12 @@ class Provider(models.Model):
     number_of_agreement = models.CharField(max_length=50,
                                            verbose_name='Номер договора'
                                            )
+    active = models.BooleanField(default=False, 
+                                 verbose_name="Статус поставщика")
 
 
 class Manufacturer(models.Model):
-    """Таблица с информацией о поставщике"""
+    """Таблица с информацией о производителе"""
     name_manufacturer = models.CharField(max_length = 100, 
                                 verbose_name='Название производителя')
     country = models.CharField(max_length = 100, 
@@ -27,29 +36,28 @@ class Manufacturer(models.Model):
                                 verbose_name='Город')
     
     
-
-
 class Beer(models.Model): 
     "Таблица с видами пива"
     name = models.CharField(max_length = 100,
                             verbose_name='Название'
                             )
     
-    type_beer= models.CharField(max_length=1, 
-                               choices=BEER_TYPE_CHOICES,
-                               verbose_name='Тип пива',
-                                )  # потом сделать связку с таблицей типов пива (
-    # крафтовое, лагер и т.д. или тянуть из справочника)
-    
+    type_beer= models.ForeignKey(Type_beer, 
+                                 on_delete=models.CASCADE, 
+                                 related_name="type_beer")
+            
     # поставщик
-    provider = models.CharField(max_length = 100, 
-                                verbose_name='Поставщик'
-                                )   # потом сделать связку с таблицей Поставщиков (для стандартизации)
-    
-    # производитель
-    manufacturer = models.CharField(max_length = 100,
-                                    verbose_name='Производитель'
-                                    )   # потом сделать связку с таблицей Производителей (для стандартизации)
+    provider = models.ForeignKey(Provider, on_delete=models.CASCADE, 
+                                 related_name="beers",
+                                 verbose_name="Поставщик",
+                                 )
+        
+            # производитель
+    manufacturer = models.ForeignKey(Manufacturer, 
+                                     on_delete=models.CASCADE, 
+                                     related_name="Manufacturers",
+                                     verbose_name='Производитель',
+                                     )
     # volume = models.FloatField(verbose_name="Объем в литрах", blank=True)
     # price = models.CharField(max_length = 5,
     #                          verbose_name='Цена', 

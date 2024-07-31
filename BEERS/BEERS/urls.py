@@ -19,3 +19,13 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+
+
+# Импортируйте необходимые view-функции
+from beer_menu.views import contacts_list, contact_detail
+
+urlpatterns = [
+    path('api/v1/contacts/', contacts_list),
+    path('api/v1/contacts/<int:pk>/', contact_detail),
+]

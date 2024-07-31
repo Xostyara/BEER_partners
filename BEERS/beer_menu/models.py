@@ -3,6 +3,31 @@ from django.db import models
 from .directorys import BEER_TYPE_CHOICES, GRADE_CHOICES
 # Create your models here.
 
+class Contacts(models.model):
+    """Справочник контактов поставщика"""
+    surname = models.CharField( max_length=30,
+                               verbose_name="Фамилия"
+                               )
+    
+    name = models.CharField(max_length= 30,
+                            verbose_name="Имя"
+                            )
+    
+    otchestvo = models.CharField(max_length=30, 
+                                 verbose_name="Отчество"
+                                 )
+    
+    job_title = models.CharField(max_length= 30, 
+                                 verbose_name="Должность"
+                                 )
+    
+    phone = models.CharField(max_length= 14, 
+                             verbose_name="Телефон"
+                             )
+    
+    email = models.EmailField(verbose_name="Почта"
+                              )
+
 class Type_beer(models.Model):
     """Справочник с типами пива"""
     key = models.CharField(max_length= 1,
@@ -25,6 +50,10 @@ class Provider(models.Model):
     active = models.BooleanField(default=False, 
                                  verbose_name="Статус поставщика")
 
+    contact = models.ForeignKey(Contacts, on_delete=models.CASCADE,
+                                related_name="Proveders",
+                                verbose_name="Контакт",
+                                )
 
 class Manufacturer(models.Model):
     """Таблица с информацией о производителе"""

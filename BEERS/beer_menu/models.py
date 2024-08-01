@@ -3,8 +3,10 @@ from django.db import models
 from .directorys import BEER_TYPE_CHOICES, GRADE_CHOICES
 # Create your models here.
 
-class Contacts(models.model):
+class Contacts(models.Model):
     """Справочник контактов поставщика"""
+    # id = models.AutoField(primary_key=True)
+
     surname = models.CharField( max_length=30,
                                verbose_name="Фамилия"
                                )
@@ -30,6 +32,8 @@ class Contacts(models.model):
 
 class Type_beer(models.Model):
     """Справочник с типами пива"""
+    # id = models.AutoField(primary_key=True)
+
     key = models.CharField(max_length= 1,
                            verbose_name="Ключ" )
     
@@ -38,6 +42,7 @@ class Type_beer(models.Model):
 
 class Provider(models.Model):
     """Таблица с информацией о поставщике"""
+    # id = models.AutoField(primary_key=True)
 
     name_provider = models.CharField(max_length = 100, 
                                 verbose_name='Название компании')
@@ -50,13 +55,17 @@ class Provider(models.Model):
     active = models.BooleanField(default=False, 
                                  verbose_name="Статус поставщика")
 
-    contact = models.ForeignKey(Contacts, on_delete=models.CASCADE,
-                                related_name="Proveders",
-                                verbose_name="Контакт",
+    contact = models.ForeignKey(Contacts, 
+                                on_delete=models.CASCADE, 
+                                blank=True, 
+                                null=True, 
+                                related_name='Provider'
                                 )
 
 class Manufacturer(models.Model):
     """Таблица с информацией о производителе"""
+    # id = models.AutoField(primary_key=True)
+
     name_manufacturer = models.CharField(max_length = 100, 
                                 verbose_name='Название производителя')
     country = models.CharField(max_length = 100, 
@@ -67,25 +76,32 @@ class Manufacturer(models.Model):
     
 class Beer(models.Model): 
     "Таблица с видами пива"
+    # id = models.AutoField(primary_key=True)
+
     name = models.CharField(max_length = 100,
                             verbose_name='Название'
                             )
     
     type_beer= models.ForeignKey(Type_beer, 
-                                 on_delete=models.CASCADE, 
+                                 on_delete=models.SET_NULL, 
+                                 blank=True, 
+                                 null=True, 
                                  related_name="type_beer")
             
     # поставщик
-    provider = models.ForeignKey(Provider, on_delete=models.CASCADE, 
+    provider = models.ForeignKey(Provider, 
+                                 on_delete=models.SET_NULL,
+                                 blank=True, 
+                                 null=True, 
                                  related_name="beers",
-                                 verbose_name="Поставщик",
                                  )
         
             # производитель
     manufacturer = models.ForeignKey(Manufacturer, 
-                                     on_delete=models.CASCADE, 
+                                     on_delete=models.SET_NULL,
+                                     blank=True, 
+                                     null=True,  
                                      related_name="Manufacturers",
-                                     verbose_name='Производитель',
                                      )
     # volume = models.FloatField(verbose_name="Объем в литрах", blank=True)
     # price = models.CharField(max_length = 5,
@@ -119,9 +135,9 @@ class Beer(models.Model):
 
     taste = models.TextField(verbose_name='Описание вкуса')  
 
-    date_publication = models.DateField(auto_now_add=True, 
-                                        verbose_name="дата создания"
-                                        )  
+    # date_publication = models.DateField(auto_now_add=True, 
+    #                                     verbose_name="дата создания"
+    #                                     )  
 
     photo = models.ImageField(verbose_name='Фото')   # фотография/картинка
     

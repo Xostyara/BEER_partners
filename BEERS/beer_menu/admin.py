@@ -43,7 +43,6 @@ class BeerAdmin(admin.ModelAdmin):
                     'bitterness',
                     'alcohol',
                     'taste',
-                    'date_publication',
                     'photo',
                     'active',
                     ) 

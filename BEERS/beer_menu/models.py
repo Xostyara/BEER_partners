@@ -3,32 +3,7 @@ from django.db import models
 from .directorys import BEER_TYPE_CHOICES, GRADE_CHOICES
 # Create your models here.
 
-class Contacts(models.Model):
-    """Справочник контактов поставщика"""
-    # id = models.AutoField(primary_key=True)
 
-    surname = models.CharField( max_length=30,
-                               verbose_name="Фамилия"
-                               )
-    
-    name = models.CharField(max_length= 30,
-                            verbose_name="Имя"
-                            )
-    
-    otchestvo = models.CharField(max_length=30, 
-                                 verbose_name="Отчество"
-                                 )
-    
-    job_title = models.CharField(max_length= 30, 
-                                 verbose_name="Должность"
-                                 )
-    
-    phone = models.CharField(max_length= 14, 
-                             verbose_name="Телефон"
-                             )
-    
-    email = models.EmailField(verbose_name="Почта"
-                              )
 
 class Type_beer(models.Model):
     """Справочник с типами пива"""
@@ -55,12 +30,40 @@ class Provider(models.Model):
     active = models.BooleanField(default=False, 
                                  verbose_name="Статус поставщика")
 
-    contact = models.ForeignKey(Contacts, 
+class Contacts(models.Model):
+    """Справочник контактов поставщика"""
+    # id = models.AutoField(primary_key=True)
+
+    surname = models.CharField(max_length=30,
+                               verbose_name="Фамилия"
+                               )
+    
+    name = models.CharField(max_length= 30,
+                            verbose_name="Имя"
+                            )
+    
+    otchestvo = models.CharField(max_length=30, 
+                                 verbose_name="Отчество"
+                                 )
+    
+    job_title = models.CharField(max_length= 30, 
+                                 verbose_name="Должность"
+                                 )
+    
+    phone = models.CharField(max_length= 14, 
+                             verbose_name="Телефон"
+                             )
+    
+    email = models.EmailField(verbose_name="Почта"
+                              )
+    
+    provider = models.ForeignKey(Provider, 
                                 on_delete=models.CASCADE, 
                                 blank=True, 
                                 null=True, 
-                                related_name='Provider'
+                                related_name='Contacts'
                                 )
+
 
 class Manufacturer(models.Model):
     """Таблица с информацией о производителе"""

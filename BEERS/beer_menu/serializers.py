@@ -13,7 +13,7 @@ class ContactsSerializer(serializers.ModelSerializer):
         fields = ('id', 
                   'surname', 
                   'name', 
-                  'otchwstvo', 
+                  'otchestvo', 
                   'job_title', 
                   'phone',
                   'email',

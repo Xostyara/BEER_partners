@@ -16,6 +16,9 @@ pip install -r requirements.txt
 ``` 
 - В папке с файлом manage.py выполните команду:
 ```
+python manage.py makemigrations
+python manage.py migrate
+
 python manage.py runserver
 ```
 

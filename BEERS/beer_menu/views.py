@@ -8,6 +8,7 @@ from beer_menu.serializers import (ContactsSerializer,
                           ManufacturerSerializer, 
                           BeerSerializer, )
 from beer_menu.models import (Contacts, Type_beer, Provider,  Manufacturer, Beer)
+from django.shortcuts import get_object_or_404
 
 
 
@@ -29,7 +30,7 @@ def contacts_list(request):
 
 @api_view(['GET', 'PUT', 'PATCH', 'DELETE'])
 def contact_detail(request, pk):
-    contact = Contacts.object.get(pk=pk)
+    contact = get_object_or_404(Contacts, pk=pk)
     if request.method == 'PUT' or request.method == 'PATCH':
         serializer = ContactsSerializer(contact, data=request.data, partial=True)
         

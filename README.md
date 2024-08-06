@@ -22,8 +22,9 @@ python manage.py migrate
 
 python manage.py runserver
 ```
-
-
+### Документация
+документация в формате Swagger: http://127.0.0.1:8000/swagger/
+документация в формате Redoc http://127.0.0.1:8000/redoc/
 
 
 

@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
@@ -121,3 +122,15 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
+...
+
+SWAGGER_SETTINGS = {
+   'SECURITY_DEFINITIONS': {
+      'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+      }
+   }
+} 

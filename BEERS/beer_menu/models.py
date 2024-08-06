@@ -1,9 +1,21 @@
 from django.db import models
 
-from .directorys import BEER_TYPE_CHOICES, GRADE_CHOICES
+from .directorys import BEER_TYPE_CHOICES, GRADE_CHOICES, BEER_VIEW_CHOICES
 # Create your models here.
 
+class View_beer(models.Model):
+    """Вид пива (баночное, на кранах, бутылочное)"""
 
+    name = models.CharField(
+        verbose_name="Название пива",
+        max_length=200,
+    )
+
+    slug = models.SlugField(
+        verbose_name="Ссылка на вид пива",
+        max_length=200,
+        unique=True,
+    )
 
 class Type_beer(models.Model):
     """Справочник с типами пива"""
@@ -14,6 +26,10 @@ class Type_beer(models.Model):
     
     type = models.CharField(max_length= 30,
                             verbose_name="Тип пива")
+    def __str__(self):
+        return self.type
+
+
 
 class Provider(models.Model):
     """Таблица с информацией о поставщике"""
@@ -29,6 +45,9 @@ class Provider(models.Model):
                                            )
     active = models.BooleanField(default=False, 
                                  verbose_name="Статус поставщика")
+    def __str__(self):
+        return self.name_provider
+
 
 class Contacts(models.Model):
     """Справочник контактов поставщика"""
@@ -63,7 +82,8 @@ class Contacts(models.Model):
                                 null=True, 
                                 related_name='Contacts'
                                 )
-
+    def __str__(self):
+        return f'{self.name} {self.surname}'
 
 class Manufacturer(models.Model):
     """Таблица с информацией о производителе"""
@@ -75,8 +95,11 @@ class Manufacturer(models.Model):
                                 verbose_name='Страна')
     city = models.CharField(max_length = 50, 
                                 verbose_name='Город')
-    
-    
+
+    def __str__(self):
+        return self.name_manufacturer
+
+
 class Beer(models.Model): 
     "Таблица с видами пива"
     # id = models.AutoField(primary_key=True)
@@ -84,7 +107,10 @@ class Beer(models.Model):
     name = models.CharField(max_length = 100,
                             verbose_name='Название'
                             )
-    
+    view_beer = models.ForeignKey(View_beer,
+                                  on_delete=models.PROTECT,
+                               verbose_name='Вид пива'
+                               ) 
     type_beer= models.ForeignKey(Type_beer, 
                                  on_delete=models.SET_NULL, 
                                  blank=True, 
@@ -147,4 +173,16 @@ class Beer(models.Model):
     active = models.BooleanField(default= False, 
                                 verbose_name='В наличии'
                                 ) #  - true/false
-    
+    def __str__(self):
+        return self.name    
+
+
+class Partners(models.Model):
+    """Партнер/Заведение"""
+    name = models.CharField(max_length=30, verbose_name="Название партнера")
+    INN = models.CharField(max_length=15,
+                       verbose_name='ИНН'
+                       )
+    adress = models.CharField(max_length=50,
+                              verbose_name="Адрес")
+    Description = models.TextField(verbose_name="Описание заведения")

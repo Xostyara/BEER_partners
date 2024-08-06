@@ -19,7 +19,7 @@ class ContactsSerializer(serializers.ModelSerializer):
                   'email',
         )
 
-class Type_beerSerializer(serializers.ModelSerializer):
+class TypeBeerSerializer(serializers.ModelSerializer):
     """Сериализатор модели типы пива"""
     class Meta:
         model = Type_beer
@@ -55,6 +55,7 @@ class BeerSerializer(serializers.ModelSerializer):
         model = Beer
         fields = ('id',
                   'name',
+                  'view_beer',
                   'type_beer',
                   'provider',
                   'manufacturer',
